@@ -22,8 +22,7 @@ const files = {
 var cbString = new Date().getTime();
 function cashBurtTask() {
   return src(files.htmlPath)
-    .pipe(replace(/cd=\d+/g, 'cb=' + cbString))
-    .pipe(dest('.', 'cashBurt.html'));
+    .pipe(replace(/cd=\d+/g, 'cb=' + cbString));
 }
 
 function styles() {

@@ -756,6 +756,7 @@ a {
   }
 
 @media (min-width: 800px) {
+
     .row__b-margin-until-medium {
       margin-bottom: 0;
     }
@@ -776,15 +777,16 @@ a {
 
     .row__medium-8 {
       float: left;
-      width: 66.67%;
+      width: 66.66%;
     }
+
     .row__medium-8--smaller {
-      float: left;
       width: 63%;
     }
   }
 
 @media (min-width: 1010px) {
+
     .row__b-margin-until-large {
       margin-bottom: 0;
     }
@@ -805,15 +807,15 @@ a {
 
     .row__large-8 {
       float: left;
-      width: 66.67%;
+      width: 66.66%;
     }
+
     .row__large-8--smaller {
-      float: left;
       width: 63%;
     }
   }
 
-/* begin equal height rule*/
+/* Begin Equal Height Rules */
 
 @media (min-width: 800px) {
 
@@ -821,10 +823,11 @@ a {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex
+
   }
   }
 
-.row--equal-height-at-medium > div{
+.row--equal-height-at-medium > div {
       float: none;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -837,10 +840,11 @@ a {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex
+
   }
   }
 
-.row--equal-height-at-large > div{
+.row--equal-height-at-large > div {
       float: none;
       display: -webkit-box;
       display: -ms-flexbox;
