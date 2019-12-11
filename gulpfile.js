@@ -4,13 +4,14 @@ var autoprefixer = require('autoprefixer');
 var cssvars = require('postcss-simple-vars');
 var nested = require('postcss-nested');
 var replace = require('gulp-replace');
-var rename = require('gulp-rename')
-var del = require('del')
+var rename = require('gulp-rename');
+var del = require('del');
+var hexrgba = require('postcss-hexrgba')
 
 var mixins = require('postcss-mixins');
 var cssImporter = require('postcss-import');
 
-
+var webpack = require("webpack");
 
 var svgSprite = require('gulp-svg-sprite');
 var config = {
@@ -31,7 +32,7 @@ const {
   src,
   dest,
   watch,
-  series
+  series, parallel
 } = require('gulp');
 
 browserSync = require('browser-sync').create();
@@ -40,7 +41,8 @@ const files = {
   cssPath: 'app/assets/styles/styles.css',
   htmlPath: 'app/index.html',
   cssPathAll: 'app/assets/styles/**/*.css',
-  htmlPathAll: 'app/**/*.html'
+  htmlPathAll: './app/**/*.html',
+  jsPathAll: 'app/assets/scripts/**/*.js'
 };
 
 /*
@@ -73,9 +75,21 @@ function copySpriteGraphic() {
 }
 
 
+
+function scripts(a) {
+  webpack(require('./webpack.config'), (err, stats) => {
+    if (err) console.error(err.toString());
+    console.log(stats.toString());
+    a();
+  })
+
+}
+
+
 function styles() {
+  console.log("Sprite function as done")
   return src('./app/assets/styles/styles.css')
-    .pipe(postcss([cssImporter, mixins, cssvars, nested, autoprefixer]))
+    .pipe(postcss([cssImporter, mixins, cssvars, nested, hexrgba, autoprefixer]))
     .pipe(browserSync.stream())
     .pipe(dest('./app/temp/styles', 'styles.css'));
 }
@@ -92,14 +106,16 @@ function reloadTask() {
   browserSync.reload();
   return src(files.htmlPath);
 }
-
 function watchMyFiles() {
   browserSyncTask();
+
   watch(
-    [files.cssPath, files.htmlPath, files.cssPathAll, files.htmlPathAll],
-    series(styles, reloadTask)
+    [files.cssPathAll, files.htmlPathAll, files.jsPathAll],
+    series(styles, scripts, reloadTask)
   );
+
+
   del(['./app/temp/sprite']);
 }
 
-exports.default = series(styles, svgSpriteTask, copySpriteCss, copySpriteGraphic, watchMyFiles);
+exports.default = series(styles, scripts, svgSpriteTask, copySpriteCss, copySpriteGraphic, watchMyFiles);  
